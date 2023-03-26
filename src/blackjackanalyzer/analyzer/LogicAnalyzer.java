@@ -13,11 +13,30 @@ public class LogicAnalyzer {
     int previousID = 0;
 
     /**
+     * Preliminary check that bypasses most other checks if true, because there are no cards in play to validate.
+     * @param gameData
+     * @return boolean
+     */
+    public boolean areBothHandsEmpty(GameData gameData) {
+        // A check for an edge case, when player has left and no cards are shown anymore.
+        return gameData.getDealerHand().isEmpty() && gameData.getPlayerHand().isEmpty();
+    }
+
+    public void emptyActionList() {
+        actionList.clear();
+    }
+
+    /**
      * Check if both hands are correct, return corresponding boolean value.
      * @param gameData
      * @return boolean
      */
     public boolean checkDealerHandFaceDownCards(GameData gameData) {
+        // A check for an edge case, when player has left and no cards are shown anymore.
+        if (areBothHandsEmpty(gameData)) {
+            return true;
+        }
+
         // Check that dealer has only one face down card.
         int countOfFaceDownCards = 0;
         for (String card : gameData.getDealerHand()) {
@@ -35,9 +54,10 @@ public class LogicAnalyzer {
      */
     public boolean checkBothHandsForIllegalCards(GameData gameData) {
         // A check for an edge case, when player has left and no cards are shown anymore.
-        if (gameData.getDealerHand().get(0).equals("-") && gameData.getPlayerHand().get(0).equals("-")) {
+        if (areBothHandsEmpty(gameData)) {
             return true;
         }
+
         List<String> combinedHandList = new ArrayList<>();
         List<String> acceptedRanks = List.of("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A");
         List<String> acceptedSuits = List.of("C", "S", "D", "H");
@@ -92,7 +112,9 @@ public class LogicAnalyzer {
                     && currentAction.equalsIgnoreCase("Joined");
         }
 
-        Action lastAction = actionList.get(actionList.size() - 1);
+        // Add current action to the list and get the one before that, (list.size() - 2).
+        actionList.add(action);
+        Action lastAction = actionList.get(actionList.size() - 2);
         String previousPerson = lastAction.getPerson();
         String previousAction = lastAction.getAction();
 
@@ -140,7 +162,7 @@ public class LogicAnalyzer {
         else if (currentPerson.equalsIgnoreCase("D")) {
 
             // Check if action is legal
-            if (!dealerLegalActions.contains(currentAction.toUpperCase())) {
+            if (!dealerLegalActions.contains(currentAction.toLowerCase())) {
                 return false;
             }
 
@@ -182,7 +204,7 @@ public class LogicAnalyzer {
      */
     public boolean checkIfBustAndGameStillContinues(GameData gameData) {
         // A check for an edge case, when player has left and no cards are shown anymore.
-        if (gameData.getDealerHand().get(0).equals("-") && gameData.getPlayerHand().get(0).equals("-")) {
+        if (areBothHandsEmpty(gameData)) {
             return true;
         }
 
@@ -200,7 +222,7 @@ public class LogicAnalyzer {
         }
 
         // Case: Player Win
-        else if (dealerTotal > 21 || playerTotal >= dealerTotal) {
+        else if (dealerTotal > 21 || (playerTotal >= dealerTotal && dealerTotal >= 17)) {
             return action.getAction().equalsIgnoreCase("Win");
         }
 
