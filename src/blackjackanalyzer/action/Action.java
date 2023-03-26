@@ -28,6 +28,6 @@ public class Action {
 
     @Override
     public String toString() {
-        return "Action{" + getPerson() + ", " + getAction() + "}";
+        return getPerson() + " " + getAction();
     }
 }

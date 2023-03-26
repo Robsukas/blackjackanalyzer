@@ -10,7 +10,6 @@ import java.util.Set;
 
 public class LogicAnalyzer {
     List<Action> actionList = new ArrayList<>();
-    int previousID = 0;
 
     /**
      * Preliminary check that bypasses most other checks if true, because there are no cards in play to validate.
@@ -22,6 +21,9 @@ public class LogicAnalyzer {
         return gameData.getDealerHand().isEmpty() && gameData.getPlayerHand().isEmpty();
     }
 
+    /**
+     * Empty the actionList.
+     */
     public void emptyActionList() {
         actionList.clear();
     }
@@ -77,6 +79,7 @@ public class LogicAnalyzer {
         }
 
         boolean check = true;
+
         for (String card : combinedHandList) {
             if (check) {
                 if (card.length() == 2) {
@@ -230,9 +233,10 @@ public class LogicAnalyzer {
         else if (dealerTotal >= 17) {
             return action.getAction().equalsIgnoreCase("Lose");
         }
-        // Any other case, return true
+
+        // Case: Player Hit || Dealer Hit
         else {
-            return true;
+            return action.getAction().equalsIgnoreCase("Hit");
         }
     }
 }

@@ -12,7 +12,7 @@ public class InputReader {
     List<String> listOfLines = new ArrayList<>();
 
     /**
-     *
+     * Read game data from txt file and add to a list.
      * @param filename
      * @return List<String>
      */

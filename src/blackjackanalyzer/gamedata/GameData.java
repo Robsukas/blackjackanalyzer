@@ -102,8 +102,52 @@ public class GameData {
         return total;
     }
 
+    /**
+     * Convert dealer hand list to string.
+     * @param dealerHandList
+     * @return String
+     */
+    private String dealerHandToString(List<String> dealerHandList) {
+        // Edge case when hand only has one element.
+        if (dealerHandList.size() == 1) {
+            return dealerHandList.get(0);
+        }
+
+        // All normal cases.
+        StringBuilder dealerHand = new StringBuilder();
+        for (String card : getDealerHand()) {
+            dealerHand.append(card);
+            dealerHand.append("-");
+
+        }
+        dealerHand.deleteCharAt(dealerHand.length() - 1);
+        return dealerHand.toString();
+    }
+
+    /**
+     * Convert player hand list to string.
+     * @param playerHandList
+     * @return String
+     */
+    private String playerHandToString(List<String> playerHandList) {
+        // Edge case when hand only has one element.
+        if (playerHandList.size() == 1) {
+            return playerHandList.get(0);
+        }
+        // All normal cases.
+        StringBuilder playerHand = new StringBuilder();
+        for (String card : getPlayerHand()) {
+            playerHand.append(card);
+            playerHand.append("-");
+        }
+        playerHand.deleteCharAt(playerHand.length() - 1);
+        return playerHand.toString();
+    }
+
     @Override
     public String toString() {
-        return "{" + getTimestamp() + "; " + getGameID() + "; " + getPlayerID() + "; " + getAction() + "; " + getDealerHand() + "; " + getPlayerHand() + "}";
+        return getTimestamp().toString() + "," + getGameID().toString() + "," + getPlayerID().toString()
+                + "," + getAction().toString() + ","
+                + dealerHandToString(getDealerHand()) + "," + playerHandToString(getPlayerHand());
     }
 }

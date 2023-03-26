@@ -31,7 +31,7 @@ public class Main {
 
 
         // Check the input game-data lines (change the filename string in the following line to whatever game data .txt file needs checking).
-        List<String> gameDataString = reader.readGameDataFromFile("game_data_1.txt");
+        List<String> gameDataString = reader.readGameDataFromFile("game_data_2.txt");
         List<String> checkedGameDataString = validator.checkAllGameDataLines(gameDataString);
 
         // Convert lines of string to GameDataObjects
@@ -59,7 +59,9 @@ public class Main {
                 outputResultList.add(gamedata);
             }
         }
-        System.out.println(outputResultList);
+        // Take outputResultList and convert it to a list of strings, then write each string to a new output file.
+        // Make sure to clear out output text file before writing there again.
+        writer.writeToOutput(writer.convertGameDataObjectsToString(outputResultList), "game_data_output.txt");
     }
 }
 
